@@ -38,7 +38,7 @@ Word.prototype.getWord = function() {
 Word.prototype.checkGuess = function(character) {
 
         for (var i = 0; i < this.lettersGuessed.length; i++) {
-            if (character === lettersGuessed[i]) {
+            if (character === this.lettersGuessed[i]) {
                 console.log("You have already guessed:", character)
                 return; //exit out of this function
             }
@@ -56,8 +56,10 @@ Word.prototype.checkGuess = function(character) {
         if (!letterFound) {
             this.guesses ++;
             console.log('Incorrect!\n Guesses Remaining: ', (this.maxGuesses - this.guesses))
-
         }
+
+        //record the users guess so they can't guess that letter again
+        this.lettersGuessed.push(character);
     }
 
 module.exports = Word;

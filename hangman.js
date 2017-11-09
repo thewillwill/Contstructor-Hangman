@@ -11,11 +11,9 @@ var Capitals = require("./capitals.js");
 //load the word object
 var Word = require("./word.js");
 
-//store the current word
+//store the current word object
 var currentWord;
-
-
-var capitalCity;
+//store the USA state name to show at the end
 var state;
 
 var wins = 0;
@@ -47,19 +45,17 @@ function playGame() {
 function chooseRandomCity() {
     // pick a random city from array
     randomIndex = Math.floor(Math.random() * Capitals.length);
-    capitalCity = Capitals[randomIndex][0].toLowerCase(); //make chars lower case
+    var capitalCity = Capitals[randomIndex][0].toLowerCase(); //make chars lower case
     state = Capitals[randomIndex][1] //store the state name to display after round
 
-    console.log('CITY,', capitalCity, ' state', state);
+    //console.log('CITY,', capitalCity, ' state', state);
+    
     //store the capitalCity as a word object made up of letter objects
     currentWord = new Word();
 
     for (var i = 0; i < capitalCity.length; i++) {
         currentWord.addLetters(capitalCity[i]);
     }
-
-    console.log("US Captial: " + currentWord.getWord());
-
 }
 
 function chooseLetter() {
@@ -75,17 +71,18 @@ function chooseLetter() {
         }
 
     }]).then(function(result) {
-        console.log('guesses', currentWord.guesses);
 
         currentWord.checkGuess(result.letter.toLowerCase());
         console.log(currentWord.getWord());
         if (currentWord.guesses >= currentWord.maxGuesses) {
-        	
+
             console.log('    Game Over  :-(');
+            console.log('You are not going to ',  state, 'to the capital of', state);
             playAgainPrompt();
         }
         else if (currentWord.numCorrectGuesses === currentWord.letters.length) {
 
+        	console.log('You are off to the capital of', state);
 			console.log('            _\\ _~-\\___');
 			console.log('    =  = ==(_U WON____D');
 			console.log('                \\_____\\___________________,-~~~~~~~`-.._');
