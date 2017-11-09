@@ -13,11 +13,20 @@ function Word() {
     this.letterFound = function(letterIndex) {
         this.letters[letterIndex].guessed = true;
     }
-    this.getWord = function() {
+
+}
+
+Word.prototype.toString = function() {
+    if (letters.length > 0 ) {
+       return letters.join();
+    }
+}
+
+Word.prototype.getWord = function() {
         var word = "";
         for (var i = 0; i < this.letters.length; i++) {
             if (this.letters[i].guessed) {
-                word += this.letters[i].getCharacter();
+                word += this.letters[i].displayCharacter();
             } else {
                 word += this.letters[i].getPlaceholder();
             }
@@ -25,14 +34,8 @@ function Word() {
         }
         return word;
     }
-    this.getFullWord = function() {
-        var word = "";
-        for (var i = 0; i < this.letters.length; i++) {
-            word += this.letters[i].getCharacter();;
-        }
 
-    }
-    this.checkGuess = function(character) {
+Word.prototype.checkGuess = function(character) {
 
         for (var i = 0; i < this.lettersGuessed.length; i++) {
             if (character === lettersGuessed[i]) {
@@ -41,22 +44,20 @@ function Word() {
             }
         }
 
-
         var letterFound = false;
         for (var i = 0; i < this.letters.length; i++) {
-            if (this.letters[i].getCharacter() === character) {
+            if (this.letters[i].character === character) {
                 this.letters[i].guessed = true;
                 this.numCorrectGuesses++;
-                console.log('L51', 'this.numCorrect...ses:', this.numCorrectGuesses)
                 letterFound = true;
-                console.log("letter found at", i);
+                console.log("Good Guess!");
             }
         }
         if (!letterFound) {
             this.guesses ++;
+            console.log('Incorrect!\n Guesses Remaining: ', (this.maxGuesses - this.guesses))
+
         }
     }
-
-}
 
 module.exports = Word;
