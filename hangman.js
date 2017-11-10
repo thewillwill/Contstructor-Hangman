@@ -13,6 +13,7 @@ var Word = require("./word.js");
 
 //store the current word object
 var currentWord;
+
 //store the USA state name to show at the end
 var state;
 
@@ -30,16 +31,17 @@ function playGame() {
     console.log("\nWelcome to USA Capital's Hangman. Ready to Fly?\n");
     console.log("       __!__");
     console.log("   _____(_)_____");
-    console.log("      !  !  !   ");
+    console.log("      !  !  !   \n");
 
-
+    //choose a capital city Word
     chooseRandomCity();
+
+    //prompt user to guess a letter
     chooseLetter();
 
 }
 
-
-//Pick a random city from the list and store it in a Word Object
+//Pick a random city from the capitals array and store it in a Word Object
 //================================
 function chooseRandomCity() {
     // pick a random city from array
@@ -61,6 +63,8 @@ function chooseRandomCity() {
 //================================
 function chooseLetter() {
 
+    console.log(currentWord.getWord());
+
     inquirer.prompt([{
         name: "letter",
         message: "Pick a letter",
@@ -76,12 +80,16 @@ function chooseLetter() {
 
     	//check if the lowercase version of the letter is in the Word
         currentWord.checkGuess(result.letter.toLowerCase());
-        console.log(currentWord.getWord());
-        if (currentWord.guesses >= currentWord.maxGuesses) {
 
+        //check if all guesses have been used
+        if (currentWord.guesses >= currentWord.maxGuesses) {
+            //display end of game message to user
             console.log('    Game Over  :-(');
             console.log('You are not going to ', currentWord.toString(), 'the capital of', state);
+
+            //prompt user to restart game
             playAgainPrompt();
+        // check if user has guessed all the characters (excluding spaces)    
         } else if (currentWord.numCorrectGuesses === currentWord.letters.length-currentWord.numSpaces) {
 
             console.log('You are off to the capital of', state);
@@ -93,8 +101,11 @@ function chooseLetter() {
             console.log('                      `---~~\\___________/------------`````');
             console.log('                      =  ===(_________D');
 
+            //prompt user to restart game
             playAgainPrompt();
         } else {
+
+            //game not over, prompt user to guess another letter
             chooseLetter();
         }
 
@@ -102,8 +113,9 @@ function chooseLetter() {
     });
 }
 
+//Prompt the user to start the game again (or not)
+//================================
 function playAgainPrompt() {
-
     inquirer.prompt({
         name: "again",
         type: "confirm",
