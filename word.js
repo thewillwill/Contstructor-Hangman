@@ -1,14 +1,26 @@
-// Requiring our CastMember constructor function we exported from castMember.js
+// Requiring our Letter constructor function we exported from letter.js
 var Letter = require("./letter.js");
 
+//Constructor function for Word object
 function Word() {
-    this.letters = [];
-    this.lettersGuessed = []; //to record letters guessed the user has made
-    this.numCorrectGuesses=0;
-    this.guesses = 0;
-    this.maxGuesses = 9; // the total incorrect guesses before the round is over
+    this.letters = [];   //array of letters that make up the word
+    this.lettersGuessed = [];  //to record letters guessed the user has made
+    this.numCorrectGuesses=0;  //used to check if player has guessed the full  word
+    this.numSpaces = 0;    //used to count the total number of characters in a "Word"
+    this.guesses = 0;   //guesses used
+    this.maxGuesses = 8; // the total incorrect guesses before the round is over
     this.addLetters = function(character) {
-        this.letters.push(new Letter(character));
+
+        //check if the character is a space using regex syntax
+        if(character.match(/\s/g)) {
+            //add the space character and 'true' to set is Space character
+            this.letters.push(new Letter(character, true));
+            this.numSpaces ++;
+        }
+        else {
+            //add the letter character and set false to set is Space character 
+            this.letters.push(new Letter(character, false));
+        }
     };
     this.letterFound = function(letterIndex) {
         this.letters[letterIndex].guessed = true;
@@ -17,8 +29,12 @@ function Word() {
 }
 
 Word.prototype.toString = function() {
-    if (letters.length > 0 ) {
-       return letters.join();
+    if (this.letters.length > 0 ) {
+        var fullWord ="";
+        for (var i = 0; i < this.letters.length; i++) {
+            fullWord += this.letters[i].character;
+        }
+       return fullWord;
     }
 }
 

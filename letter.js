@@ -1,9 +1,12 @@
 
-function Letter(character) {
+function Letter(character, isSpace) {
 	this.character = character;
 	this.guessed = false;
-	this.isSpace = false;
+	this.isSpace = isSpace;
 	this.getPlaceholder = function () {
+		if (this.isSpace) {
+			return "   ";
+		}
 		return "_ ";
 	}
 	this.displayCharacter = function() {
